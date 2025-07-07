@@ -1,0 +1,36 @@
+.first-con {
+  background-color: rgb(17, 27, 33);
+  color: gray;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.second-con {
+  background-color: rgb(34, 46, 53);
+  padding: 25px;
+}
+
+.controls {
+  display: flex;
+  gap: 25px;
+  padding-bottom: 15px;
+}
+
+.controls a {
+  text-decoration: none;
+  color: white;
+  padding: 3px 15px;
+}
+
+.controls a:hover {
+  background-color: rgb(0, 87, 0);
+  border-radius: 10px;
+}
+
+.active-link {
+  background-color: green;
+  padding: 10px;
+  border-radius: 10px;
+}

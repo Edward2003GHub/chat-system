@@ -1,0 +1,31 @@
+.edit-modal {
+  background-color: rgb(32, 44, 51);
+  border: none;
+  padding: 15px;
+  width: 350px;
+  color: white;
+  border: 1px solid rgb(17, 28, 33);
+}
+
+.edit-modal[open] {
+  animation: slide-in-from-top 0.35s ease-out;
+}
+
+.edit-modal::backdrop {
+  background: rgba(0, 0, 0, 0.54);
+}
+
+.edit-modal form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+input[type="submit"] {
+  background-color: rgb(17, 28, 33);
+  color: white;
+}
+
+input[type="submit"]:hover {
+  background-color: rgba(17, 28, 33, 0.729);
+}

@@ -1,0 +1,64 @@
+.view-chat-div {
+  flex: 1;
+  background-color: rgb(34, 46, 53);
+  position: relative;
+}
+
+.photo-username {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background-color: rgb(32, 44, 51);
+}
+
+.photo-username img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.photo-username div {
+    font-size: 20px;
+}
+
+.input-area {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: rgb(32, 44, 51);
+  padding: 15px 30px;
+}
+
+.input-area input[type="text"]:focus {
+  outline: none;
+  color: white;
+}
+
+.input-area input[type="text"] {
+  padding: 15px;
+  background-color: rgb(42, 57, 66);
+  border: none;
+  flex: 1;
+}
+
+.input-area form {
+  display: flex;
+}
+
+.input-area button {
+  border: none;
+  background-color: rgb(32, 44, 51);
+  color: white;
+  padding: 0px 20px;
+}
+
+.input-area button:hover {
+  background-color: rgb(34, 46, 53);
+}

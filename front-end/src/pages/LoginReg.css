@@ -1,0 +1,41 @@
+.center-div {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  background-color: rgb(32, 44, 51);
+  width: 350px;
+  padding: 20px 15px;
+  color: white;
+  border: 1px solid rgb(17, 28, 33);
+  border-radius: 10px;
+}
+
+.container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.container form span a {
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.container form span a:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.container form input[type="submit"] {
+  background-color: rgb(17, 28, 33);
+  color: white;
+}
+
+.container form input[type="submit"]:hover {
+  background-color: rgba(17, 28, 33, 0.729);
+}

@@ -1,0 +1,36 @@
+.search {
+  color: white;
+  margin: 15px 0px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.search input:focus {
+  outline: none;
+  color: white;
+}
+
+.search input {
+  padding: 10px;
+  background-color: rgb(32, 44, 51);
+  border: none;
+}
+
+.logout {
+  background-color: rgb(17, 28, 33);
+  color: white;
+}
+
+.logout:hover {
+  background-color: rgb(21, 32, 38);
+}
+
+.chats {
+  text-decoration: none;
+  color: white;
+}
+
+.chats:hover {
+  color: rgba(255, 255, 255, 0.863);
+}

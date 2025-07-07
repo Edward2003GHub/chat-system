@@ -1,0 +1,8 @@
+.welcome {
+  flex: 1;
+  background-color: rgb(34, 46, 53);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}

@@ -1,0 +1,27 @@
+.user-card {
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  padding: 10px;
+  border-top: 1px solid rgba(134, 150, 160, 0.15);
+}
+
+.user-card:hover {
+  background-color: rgb(44, 60, 70);
+}
+
+.link-active {
+  background-color: rgb(32, 44, 51);
+}
+
+.img-n-details {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.img-n-details img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}

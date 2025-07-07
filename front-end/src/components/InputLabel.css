@@ -1,0 +1,11 @@
+.input-style {
+    padding: 5px;
+    background-color: rgb(42, 57, 66);
+    border: none;
+    color: white;
+}
+
+.input-style:focus {
+  outline: none;
+  box-shadow: none;
+}

@@ -1,0 +1,21 @@
+.firstCon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: gray;
+  background-color: rgb(17, 27, 33);
+}
+
+.secondCon {
+  background-color: rgb(34, 46, 53);
+  padding: 25px;
+  color: gray;
+}
+
+.secondCon img {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 30px;
+}

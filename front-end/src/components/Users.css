@@ -1,0 +1,10 @@
+.users {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 710px;
+}
+
+.users::-webkit-scrollbar {
+  display: none;
+}
