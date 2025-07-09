@@ -77,7 +77,7 @@ export default function ViewChat() {
       <div className="input-area">
         <form onSubmit={handleSubmit}>
           <input type="text" placeholder="type a message" name="message" />
-          <Button variant="text">
+          <Button variant="text" type="submit">
             <SendIcon />
           </Button>
         </form>

@@ -1,14 +1,13 @@
 import SettingsIcon from "@mui/icons-material/Settings";
 import classes from "./SettingsLayout.module.css";
-import { useQuery } from "@tanstack/react-query";
-import { fetchUsersById } from "../util/https";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteUserAccount, fetchUsersById } from "../util/https";
 import Button from "@mui/material/Button";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useRef } from "react";
 import EditModal from "./EditModal";
 import LogoutIcon from "@mui/icons-material/Logout";
-import IconButton from "@mui/material/IconButton";
 import { useNavigate } from "react-router-dom";
 
 export default function SettingsLayout() {
@@ -24,6 +23,18 @@ export default function SettingsLayout() {
   function handleLogout() {
     localStorage.clear();
     navigate("/");
+  }
+
+  const { mutate } = useMutation({
+    mutationFn: deleteUserAccount,
+    onSuccess: () => {
+      localStorage.clear();
+      navigate("/");
+    },
+  });
+
+  function handleDeleteAccount() {
+    mutate({ userId: id });
   }
 
   const { data, isPending } = useQuery({
@@ -64,7 +75,8 @@ export default function SettingsLayout() {
               }}
               onClick={handleEdit}
             >
-              Edit Profile&nbsp;<EditIcon />
+              Edit Profile&nbsp;
+              <EditIcon />
             </Button>
             <Button
               color="error"
@@ -72,7 +84,8 @@ export default function SettingsLayout() {
               style={{ alignSelf: "flex-start", textTransform: "none" }}
               onClick={handleLogout}
             >
-              Logout&nbsp;<LogoutIcon />
+              Logout&nbsp;
+              <LogoutIcon />
             </Button>
           </div>
         </div>
@@ -87,6 +100,7 @@ export default function SettingsLayout() {
           variant="outlined"
           color="error"
           style={{ textTransform: "none" }}
+          onClick={handleDeleteAccount}
         >
           Delete Account&nbsp;
           <DeleteIcon />

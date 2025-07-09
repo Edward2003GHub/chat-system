@@ -1,17 +1,25 @@
 import classes from "./EditModal.module.css";
 
-import { useImperativeHandle } from "react";
+import { useImperativeHandle, useState } from "react";
 import { useRef } from "react";
 import { forwardRef } from "react";
 import { createPortal } from "react-dom";
 import InputLabel from "./InputLabel";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient, updateUserData } from "../util/https";
 
 const EditModal = forwardRef(function EditModal(
   { username, photoURL, email },
   ref
 ) {
+  const [usernameEmpty, setUsernameEmpty] = useState(false);
+  const [emailEmpty, setEmailEmpty] = useState(false);
+
+  const user = JSON.parse(localStorage.getItem("user"));
+  const id = user.id;
+
   const dialog = useRef();
 
   useImperativeHandle(ref, () => {
@@ -21,6 +29,48 @@ const EditModal = forwardRef(function EditModal(
       },
     };
   });
+
+  const { mutate } = useMutation({
+    mutationFn: updateUserData,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["userById", id]);
+      dialog.current.close();
+    },
+  });
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const username = event.target.username.value.trim();
+    const photoUrl = event.target.photoURL.value.trim();
+    const email = event.target.email.value.trim();
+
+    let hasError = false;
+
+    if (!username) {
+      setUsernameEmpty(true);
+      hasError = true;
+    } else {
+      setUsernameEmpty(false);
+    }
+
+    if (!email) {
+      setEmailEmpty(true);
+      hasError = true;
+    } else {
+      setEmailEmpty(false);
+    }
+
+    if (hasError) return;
+
+    const formData = {
+      username,
+      photo_url: photoUrl,
+      email,
+    };
+
+    mutate({ updatedData: formData, userId: id });
+  }
 
   return createPortal(
     <dialog ref={dialog} className={classes["edit-modal"]}>
@@ -40,13 +90,15 @@ const EditModal = forwardRef(function EditModal(
           <CloseIcon />
         </IconButton>
       </div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <InputLabel
           label="Username"
           placeholderText="Enter username"
           forr="username"
           type="text"
           defaultValue={username || ""}
+          err={usernameEmpty}
+          errText="Please fill this field"
         />
         <InputLabel
           label="Photo URL"
@@ -61,6 +113,8 @@ const EditModal = forwardRef(function EditModal(
           forr="email"
           type="email"
           defaultValue={email}
+          err={emailEmpty}
+          errText="Please fill this field"
         />
         <input type="submit" value="Update" />
       </form>

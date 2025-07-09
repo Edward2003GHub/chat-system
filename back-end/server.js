@@ -176,6 +176,52 @@ app.get("/user/:id", async (req, res) => {
   }
 });
 
+app.put("/user/:id", async (req, res) => {
+  const { id } = req.params;
+  const { username, email, photo_url } = req.body;
+
+  try {
+    await db.query(
+      "UPDATE users SET username = $1, email = $2, photo_url = $3 WHERE id = $4",
+      [username, email, photo_url, id]
+    );
+
+    res.status(200).json({ message: "User updated successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Database update failed" });
+  }
+});
+
+app.delete("/user/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await db.query("BEGIN");
+
+    await db.query("delete from friends where user_id = $1 or friend_id = $1", [
+      id,
+    ]);
+    await db.query(
+      "delete from friend_requests where sender_id = $1 or receiver_id = $1",
+      [id]
+    );
+    await db.query(
+      "delete from messages where sender_id = $1 or receiver_id = $1",
+      [id]
+    );
+    await db.query("delete from users where id = $1", [id]);
+
+    await db.query("COMMIT");
+
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (err) {
+    await db.query("ROLLBACK");
+    console.error(err);
+    res.status(500).json({ error: "Deleting user failed" });
+  }
+});
+
 app.post("/messages", async (req, res) => {
   const { sender_id, receiver_id } = req.body;
 

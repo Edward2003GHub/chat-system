@@ -76,6 +76,47 @@ export async function fetchUsersById(id) {
   return await response.json();
 }
 
+export async function updateUserData({ updatedData, userId }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user?.token;
+
+  try {
+    const res = await fetch(`http://localhost:4000/user/${userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    if (!res.ok) throw new Error("Failed to update user");
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export async function deleteUserAccount({ userId }) {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user.token;
+
+  try {
+    const response = await fetch(`http://localhost:4000/user/${userId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to delete user");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function fetchMessages({ senderId, receiverId }) {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user?.token;
