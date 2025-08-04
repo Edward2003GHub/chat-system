@@ -1,6 +1,4 @@
-/////////////////////////////////////////////
-// The tables I've created for the project //
-/////////////////////////////////////////////
+The tables I've created for the project
 
 CREATE TABLE friend_requests (
     id SERIAL PRIMARY KEY,
