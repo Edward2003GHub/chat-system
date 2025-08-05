@@ -295,12 +295,53 @@ app.post("/friend-request", async (req, res) => {
 
     const receiverId = receiverResult.rows[0].id;
 
-    // 2. Prevent self-request
     if (senderId === receiverId) {
       return res.status(400).json({ message: "You can't add yourself." });
     }
 
-    // 3. Check for existing request
+    // 2. Check if receiver already sent a pending request to sender
+    const reciprocalRequest = await db.query(
+      `SELECT id FROM friend_requests 
+       WHERE sender_id = $1 AND receiver_id = $2 AND status = 'pending'`,
+      [receiverId, senderId]
+    );
+
+    if (reciprocalRequest.rows.length > 0) {
+      const reciprocalRequestId = reciprocalRequest.rows[0].id;
+
+      await db.query("BEGIN");
+
+      // Accept reciprocal request
+      await db.query(
+        `UPDATE friend_requests
+         SET status = 'accepted', updated_at = CURRENT_TIMESTAMP
+         WHERE id = $1`,
+        [reciprocalRequestId]
+      );
+
+      // Insert mutual friendship
+      await db.query(
+        `INSERT INTO friends (user_id, friend_id)
+         VALUES ($1, $2), ($2, $1)
+         ON CONFLICT DO NOTHING`,
+        [senderId, receiverId]
+      );
+
+      // Insert the current request as accepted (for history)
+      await db.query(
+        `INSERT INTO friend_requests (sender_id, receiver_id, status, updated_at)
+         VALUES ($1, $2, 'accepted', CURRENT_TIMESTAMP)`,
+        [senderId, receiverId]
+      );
+
+      await db.query("COMMIT");
+
+      return res
+        .status(201)
+        .json({ message: "Friend request matched, now friends." });
+    }
+
+    // 3. Check if sender already sent a pending request
     const existing = await db.query(
       `SELECT * FROM friend_requests 
        WHERE sender_id = $1 AND receiver_id = $2 AND status = 'pending'`,
@@ -311,14 +352,16 @@ app.post("/friend-request", async (req, res) => {
       return res.status(400).json({ message: "Request already sent." });
     }
 
-    // 4. Insert friend request
+    // 4. Insert new pending friend request
     await db.query(
-      `INSERT INTO friend_requests (sender_id, receiver_id) VALUES ($1, $2)`,
+      `INSERT INTO friend_requests (sender_id, receiver_id)
+       VALUES ($1, $2)`,
       [senderId, receiverId]
     );
 
     res.status(201).json({ message: "Friend request sent." });
   } catch (err) {
+    await db.query("ROLLBACK");
     console.error(err);
     res.status(500).json({ message: "Internal server error." });
   }
